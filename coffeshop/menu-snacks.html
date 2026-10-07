@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snacks Counter — Coffee Brew</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="coffeshop.css">
+  <link rel="stylesheet" href="menu-category.css">
+</head>
+<body>
+
+  <header>
+    <nav class="navbar section-content">
+      <a href="coffeshop.html" class="nav-logo">
+        <h2 class="logo-text" style="font-family:miniver;color:rgb(255,115,15);">Coffee Brew</h2>
+      </a>
+      <ul class="nav-menu">
+        <button id="menu-close-button" class="fas fa-times"></button>
+        <li class="nav-item"><a href="coffeshop.html" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="coffeshop.html#about" class="nav-link">About</a></li>
+        <li class="nav-item"><a href="coffeshop.html#menu" class="nav-link">Menu</a></li>
+        <li class="nav-item"><a href="coffeshop.html#gallery" class="nav-link">Gallery</a></li>
+        <li class="nav-item"><a href="coffeshop.html#contact" class="nav-link">Contact</a></li>
+        <li class="nav-item"><a href="myorders.html" class="nav-link" style="color:#f3a01c;">My Order</a></li>
+      </ul>
+      <button id="menu-open-button" class="fas fa-bars"></button>
+    </nav>
+  </header>
+
+  <main>
+
+    <div class="cat-hero cat-hero-snacks">
+      <div class="cat-hero-content">
+        <div class="cat-hero-icon">
+          <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+            <ellipse cx="40" cy="22" rx="28" ry="16" fill="url(#hSnackBun)"/>
+            <ellipse cx="30" cy="15" rx="3" ry="1.5" fill="#fef3c7" opacity="0.75" transform="rotate(-20 30 15)"/>
+            <ellipse cx="40" cy="11" rx="3" ry="1.5" fill="#fef3c7" opacity="0.75"/>
+            <ellipse cx="50" cy="15" rx="3" ry="1.5" fill="#fef3c7" opacity="0.75" transform="rotate(20 50 15)"/>
+            <path d="M10 38 Q20 32 30 35 Q40 38 50 33 Q60 28 70 35 L70 42 Q60 35 50 40 Q40 45 30 42 Q20 38 10 44 Z" fill="#4ade80"/>
+            <path d="M12 42 L68 42 L66 50 L14 50 Z" fill="#fbbf24"/>
+            <rect x="12" y="49" width="56" height="13" rx="5" fill="url(#hSnackPatty)"/>
+            <ellipse cx="40" cy="66" rx="28" ry="10" fill="url(#hSnackBottom)"/>
+            <defs>
+              <linearGradient id="hSnackBun" x1="12" y1="6" x2="68" y2="38" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#fde68a"/><stop offset="100%" stop-color="#d97706"/>
+              </linearGradient>
+              <linearGradient id="hSnackPatty" x1="12" y1="49" x2="68" y2="62" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#92400e"/><stop offset="100%" stop-color="#78350f"/>
+              </linearGradient>
+              <linearGradient id="hSnackBottom" x1="12" y1="56" x2="68" y2="76" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#fde68a"/><stop offset="100%" stop-color="#b45309"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <h1 class="cat-hero-title">Snacks Counter</h1>
+        <p class="cat-hero-sub">Pair your coffee with something delicious — tacos, burgers, pizzas and more.</p>
+      </div>
+    </div>
+
+    <div class="cat-tabs-bar">
+      <div class="section-content">
+        <div class="cat-tabs">
+          <a href="menu-hot.html"     class="cat-tab"><i class="fas fa-mug-hot"></i> Hot Coffees</a>
+          <a href="menu-cold.html"    class="cat-tab"><i class="fas fa-snowflake"></i> Cold Beverages</a>
+          <a href="menu-snacks.html"  class="cat-tab active"><i class="fas fa-burger"></i> Snacks</a>
+          <a href="menu-special.html" class="cat-tab"><i class="fas fa-star"></i> Chef's Specials</a>
+        </div>
+      </div>
+    </div>
+
+    <section class="cat-section menu-section">
+      <div class="section-content">
+        <ul class="menu-list" id="itemGrid">
+
+          <li class="menu-item"><a href="product.html?id=chicken-doritto" class="menu-item-link">
+            <img src="s1.png" alt="Chicken Doritto" class="menu-image">
+            <h3 class="name">Chicken Doritto <span>$6.99</span></h3>
+            <p class="text">Crispy Dorito-crusted chicken bites — crunchy outside, juicy inside.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+          <li class="menu-item"><a href="product.html?id=taco-pork" class="menu-item-link">
+            <img src="s2.png" alt="Taaco Pork" class="menu-image">
+            <h3 class="name">Taaco Pork <span>$6.99</span></h3>
+            <p class="text">Slow-seasoned pork in a warm taco shell with fresh toppings.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+          <li class="menu-item"><a href="product.html?id=afghani-salsa" class="menu-item-link">
+            <img src="s3.png" alt="Afghani Salsa" class="menu-image">
+            <h3 class="name">Afghani Salsa <span>$6.99</span></h3>
+            <p class="text">Afghan spices with fresh tomatoes, herbs, and chilli. Served with flatbread.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+          <li class="menu-item"><a href="product.html?id=tottia-taco" class="menu-item-link">
+            <img src="s4.png" alt="Tottia Taco" class="menu-image">
+            <h3 class="name">Tottia Taco <span>$6.99</span></h3>
+            <p class="text">Soft flour tortilla loaded with seasoned fillings and creamy sauce.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+          <li class="menu-item"><a href="product.html?id=special-taco-bell" class="menu-item-link">
+            <img src="s5.png" alt="Special Taco Bell" class="menu-image">
+            <h3 class="name">Special Taco Bell <span>$6.99</span></h3>
+            <p class="text">Crunchy shell, seasoned beef, and all the classic toppings.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+          <li class="menu-item"><a href="product.html?id=mexican-comboa" class="menu-item-link">
+            <img src="s6.png" alt="Mexican Comboa" class="menu-image">
+            <h3 class="name">Mexican Comboa <span>$6.99</span></h3>
+            <p class="text">Tacos, nachos, and salsa all in one. Fiesta on a plate.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+          <li class="menu-item"><a href="product.html?id=fish-taco" class="menu-item-link">
+            <img src="s7.png" alt="Fish Taco" class="menu-image">
+            <h3 class="name">Fish Taco <span>$6.99</span></h3>
+            <p class="text">Crispy battered fish in a soft corn tortilla with tangy slaw.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+          <li class="menu-item"><a href="product.html?id=meriana-roll" class="menu-item-link">
+            <img src="s8.png" alt="Meriana Roll" class="menu-image">
+            <h3 class="name">Meriana Roll <span>$6.99</span></h3>
+            <p class="text">Golden-baked roll stuffed with seasoned chicken, herbs, and melted cheese.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+          <li class="menu-item"><a href="product.html?id=salood" class="menu-item-link">
+            <img src="s9.png" alt="Salood" class="menu-image">
+            <h3 class="name">Salood <span>$6.99</span></h3>
+            <p class="text">Fresh salad bowl packed with seasonal greens, herbs, and zesty dressing.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+          <li class="menu-item"><a href="product.html?id=spicy-pizza" class="menu-item-link">
+            <img src="s10.png" alt="Spicy Pizza" class="menu-image">
+            <h3 class="name">Spicy Pizza <span>$6.99</span></h3>
+            <p class="text">Personal pizza with spicy pepperoni, jalapeños, and a fiery tomato base.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+          <li class="menu-item"><a href="product.html?id=cheesy-burst" class="menu-item-link">
+            <img src="s11.png" alt="Cheesy Burst" class="menu-image">
+            <h3 class="name">Cheesy Burst <span>$6.99</span></h3>
+            <p class="text">Cheese-stuffed crust pizza loaded with four cheeses. Pure cheesy heaven.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+          <li class="menu-item"><a href="product.html?id=solo-slice" class="menu-item-link">
+            <img src="s12.png" alt="Solo Slice" class="menu-image">
+            <h3 class="name">Solo Slice <span>$6.99</span></h3>
+            <p class="text">A single generous slice of our signature pizza — perfect quick snack.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+          <li class="menu-item"><a href="product.html?id=classic-cheeseburger" class="menu-item-link">
+            <img src="s13.png" alt="Classic Cheeseburger" class="menu-image">
+            <h3 class="name">Classic Cheeseburger <span>$8.99</span></h3>
+            <p class="text">Juicy patty, melted cheese, lettuce, tomato, and pickles. Universally loved.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+          <li class="menu-item"><a href="product.html?id=bacon-cheeseburger" class="menu-item-link">
+            <img src="s14.png" alt="Bacon Cheeseburger" class="menu-image">
+            <h3 class="name">Bacon Cheeseburger <span>$8.99</span></h3>
+            <p class="text">Smoky bacon over a cheesy beef patty. Adds crunch and savory depth.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+          <li class="menu-item"><a href="product.html?id=bbq-burger" class="menu-item-link">
+            <img src="s15.png" alt="BBQ Burger" class="menu-image">
+            <h3 class="name">BBQ Burger <span>$9.99</span></h3>
+            <p class="text">Smoky barbecue sauce with grilled onions and cheddar. Gloriously messy.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+          <li class="menu-item"><a href="product.html?id=jucy-lucy" class="menu-item-link">
+            <img src="s16.png" alt="Jucy Lucy" class="menu-image">
+            <h3 class="name">Jucy Lucy <span>$8.99</span></h3>
+            <p class="text">Cheese stuffed inside the patty. Bite carefully — it oozes molten goodness.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+          <li class="menu-item"><a href="product.html?id=teriyaki-burger" class="menu-item-link">
+            <img src="s18.png" alt="Teriyaki Burger" class="menu-image">
+            <h3 class="name">Teriyaki Burger <span>$9.99</span></h3>
+            <p class="text">Sweet-savory teriyaki glaze with grilled pineapple. A tropical twist.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+          <li class="menu-item"><a href="product.html?id=ramen-burger" class="menu-item-link">
+            <img src="s19.png" alt="Ramen Burger" class="menu-image">
+            <h3 class="name">Ramen Burger <span>$9.99</span></h3>
+            <p class="text">Crispy ramen noodle buns instead of bread. Crunchy, chewy, Instagram-worthy.</p>
+            <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+          </a></li>
+
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer-section">
+    <div class="section-content">
+      <p class="copyright-text">📞+00-3456744544 Coffee Brew</p>
+      <div class="social-link-list">
+        <a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-x-twitter"></i></a>
+      </div>
+      <p class="policy-text">
+        <a href="#" class="policy-link">Privacy policy</a>
+        <span class="separator">•</span>
+        <a href="#" class="policy-link">Refund policy</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="store.js"></script>
+  <script src="menu-category.js"></script>
+  <script>
+    const menuOpenButton  = document.querySelector("#menu-open-button");
+    const menuCloseButton = document.querySelector("#menu-close-button");
+    menuOpenButton.addEventListener("click", () => document.body.classList.toggle("show-mobile-menu"));
+    menuCloseButton.addEventListener("click", () => menuOpenButton.click());
+    injectCustomItems('Snack', document.getElementById('itemGrid'));
+  </script>
+</body>
+</html>

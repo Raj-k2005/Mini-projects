@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coffee Brew — Welcome</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary:   #3b141c;
+      --secondary: #f3a01c;
+      --dark:      #1a0a0e;
+      --white:     #fff;
+      --radius-m:  30px;
+      --radius-s:  10px;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      background: #1a0a0e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ── Background gradient ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(59,20,28,0.95) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(243,160,28,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 60% 80%, rgba(59,20,28,0.8) 0%, transparent 50%);
+      z-index: 0;
+    }
+
+    /* ── Particles ── */
+    .particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .particles span {
+      position: absolute;
+      display: block;
+      border-radius: 50%;
+      background: rgba(243,160,28,0.15);
+      animation: floatUp linear infinite;
+    }
+    .particles span:nth-child(1) { width:70px;  height:70px;  left:8%;  bottom:-80px; animation-duration:12s; animation-delay:0s; }
+    .particles span:nth-child(2) { width:25px;  height:25px;  left:22%; bottom:-30px; animation-duration:8s;  animation-delay:2s; }
+    .particles span:nth-child(3) { width:45px;  height:45px;  left:68%; bottom:-50px; animation-duration:10s; animation-delay:1s; }
+    .particles span:nth-child(4) { width:18px;  height:18px;  left:83%; bottom:-20px; animation-duration:7s;  animation-delay:3s; }
+    .particles span:nth-child(5) { width:55px;  height:55px;  left:4%;  bottom:-60px; animation-duration:14s; animation-delay:0.5s; }
+    .particles span:nth-child(6) { width:22px;  height:22px;  left:48%; bottom:-25px; animation-duration:9s;  animation-delay:4s; }
+    .particles span:nth-child(7) { width:40px;  height:40px;  left:38%; bottom:-45px; animation-duration:11s; animation-delay:1.5s; }
+    .particles span:nth-child(8) { width:14px;  height:14px;  left:88%; bottom:-15px; animation-duration:6s;  animation-delay:2.5s; }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(0) rotate(0deg);    opacity: 0.7; }
+      100% { transform: translateY(-110vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* ── Page wrapper ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 52px;
+      padding: 48px 24px;
+      width: 100%;
+      max-width: 860px;
+      min-height: 100vh;
+      justify-content: center;
+    }
+
+    /* ── Brand ── */
+    .brand { text-align: center; }
+
+    /* SVG logo wrapper */
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      animation: logoDrop 0.9s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+
+    @keyframes logoDrop {
+      from { opacity: 0; transform: translateY(-40px) scale(0.7); }
+      to   { opacity: 1; transform: translateY(0)    scale(1); }
+    }
+
+    .logo-svg {
+      width: 130px;
+      height: 130px;
+      filter: drop-shadow(0 0 28px rgba(243,160,28,0.55))
+              drop-shadow(0 8px 20px rgba(0,0,0,0.5));
+      animation: logoGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes logoGlow {
+      0%,100% { filter: drop-shadow(0 0 20px rgba(243,160,28,0.45)) drop-shadow(0 8px 20px rgba(0,0,0,0.5)); }
+      50%      { filter: drop-shadow(0 0 40px rgba(243,160,28,0.75)) drop-shadow(0 8px 24px rgba(0,0,0,0.5)); }
+    }
+
+    /* Steam lines animation */
+    .steam-1 { animation: steam 2.2s ease-in-out infinite; }
+    .steam-2 { animation: steam 2.2s ease-in-out infinite 0.4s; }
+    .steam-3 { animation: steam 2.2s ease-in-out infinite 0.8s; }
+
+    @keyframes steam {
+      0%   { opacity: 0;   transform: translateY(0)   scaleX(1); }
+      30%  { opacity: 0.9; transform: translateY(-6px) scaleX(1.1); }
+      70%  { opacity: 0.5; transform: translateY(-14px) scaleX(0.9); }
+      100% { opacity: 0;   transform: translateY(-22px) scaleX(0.8); }
+    }
+
+    .brand-name {
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      font-weight: 800;
+      color: var(--secondary);
+      letter-spacing: 3px;
+      text-shadow: 0 0 40px rgba(243,160,28,0.35);
+      line-height: 1;
+    }
+
+    .brand-tagline {
+      margin-top: 12px;
+      color: rgba(255,255,255,0.5);
+      font-size: 1rem;
+      font-weight: 300;
+      letter-spacing: 1.5px;
+    }
+
+    /* ── Cards ── */
+    .cards {
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .card {
+      flex: 1;
+      min-width: 250px;
+      max-width: 340px;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 22px;
+      padding: 44px 30px 36px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s ease, border-color 0.3s ease,
+                  background 0.3s ease, box-shadow 0.3s ease;
+      outline: none;
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .card:nth-child(2) { animation-delay: 0.15s; }
+
+    .card:hover, .card:focus {
+      transform: translateY(-12px);
+    }
+
+    .card-customer:hover, .card-customer:focus {
+      border-color: var(--secondary);
+      background: rgba(243,160,28,0.09);
+      box-shadow: 0 24px 64px rgba(243,160,28,0.22);
+    }
+
+    .card-admin:hover, .card-admin:focus {
+      border-color: #8b5cf6;
+      background: rgba(139,92,246,0.09);
+      box-shadow: 0 24px 64px rgba(139,92,246,0.22);
+    }
+
+    /* icon circle */
+    .card-icon-wrap {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 22px;
+      font-size: 2.1rem;
+      transition: transform 0.3s ease;
+    }
+
+    .card-customer .card-icon-wrap {
+      background: rgba(243,160,28,0.14);
+      color: var(--secondary);
+      border: 2px solid rgba(243,160,28,0.3);
+    }
+
+    .card-admin .card-icon-wrap {
+      background: rgba(139,92,246,0.14);
+      color: #c4b5fd;
+      border: 2px solid rgba(139,92,246,0.3);
+    }
+
+    .card:hover .card-icon-wrap { transform: scale(1.18) rotate(-6deg); }
+
+    .card-title {
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .card-desc {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+
+    .card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 26px;
+      border-radius: var(--radius-m);
+      font-size: 0.92rem;
+      font-weight: 700;
+      transition: gap 0.25s ease, transform 0.2s ease;
+      pointer-events: none;
+    }
+
+    .card-customer .card-btn { background: var(--secondary); color: var(--primary); }
+    .card-admin    .card-btn { background: #7c3aed;          color: #fff; }
+    .card:hover .card-btn    { gap: 14px; }
+
+    /* ── Login Modal ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.78);
+      -webkit-backdrop-filter: blur(7px);
+      backdrop-filter: blur(7px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s ease;
+      padding: 20px;
+    }
+
+    .overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: #1e0d12;
+      border: 1px solid rgba(243,160,28,0.22);
+      border-radius: 22px;
+      padding: 50px 40px 40px;
+      width: 100%;
+      max-width: 430px;
+      position: relative;
+      transform: translateY(28px) scale(0.97);
+      transition: transform 0.28s ease;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.65);
+    }
+
+    .overlay.open .modal { transform: translateY(0) scale(1); }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 14px; right: 16px;
+      background: none; border: none;
+      color: rgba(255,255,255,0.35);
+      font-size: 1.25rem;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+      line-height: 1;
+    }
+    .modal-close-btn:hover { color: #fff; background: rgba(255,255,255,0.08); }
+
+    .modal-lock-icon {
+      width: 66px; height: 66px;
+      border-radius: 50%;
+      background: rgba(243,160,28,0.12);
+      border: 2px solid rgba(243,160,28,0.28);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; color: var(--secondary);
+      margin: 0 auto 18px;
+    }
+
+    .modal-title {
+      text-align: center;
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .modal-sub {
+      text-align: center;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.88rem;
+      margin-bottom: 30px;
+    }
+
+    .field { margin-bottom: 18px; }
+
+    .field label {
+      display: block;
+      color: rgba(255,255,255,0.65);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    .input-row {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-row .input-icon {
+      position: absolute;
+      left: 14px;
+      color: rgba(255,255,255,0.28);
+      font-size: 0.88rem;
+      pointer-events: none;
+    }
+
+    .input-row input {
+      width: 100%;
+      height: 48px;
+      padding: 0 46px;
+      background: rgba(255,255,255,0.07);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-s);
+      color: #fff;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.22s;
+    }
+    .input-row input::placeholder { color: rgba(255,255,255,0.22); }
+    .input-row input:focus { border-color: var(--secondary); }
+
+    .eye-btn {
+      position: absolute; right: 12px;
+      background: none; border: none;
+      color: rgba(255,255,255,0.28);
+      cursor: pointer; font-size: 0.88rem;
+      padding: 4px; transition: color 0.2s;
+    }
+    .eye-btn:hover { color: #fff; }
+
+    .error-msg {
+      color: #f87171;
+      font-size: 0.83rem;
+      min-height: 18px;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .login-submit {
+      width: 100%;
+      height: 50px;
+      background: var(--secondary);
+      color: var(--primary);
+      border: none;
+      border-radius: var(--radius-m);
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.22s, transform 0.18s;
+      margin-top: 4px;
+    }
+    .login-submit:hover { background: #e8920a; transform: translateY(-2px); }
+    .login-submit:active { transform: translateY(0); }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(36px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 560px) {
+      .page { gap: 36px; padding: 36px 16px; }
+      .cards { gap: 18px; }
+      .card { padding: 36px 22px 28px; }
+      .modal { padding: 40px 22px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Particles -->
+  <div class="particles" aria-hidden="true">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- Main page -->
+  <div class="page">
+
+    <!-- Brand -->
+    <div class="brand">
+      <!-- Fancy SVG Logo -->
+      <div class="logo-wrap">
+        <svg class="logo-svg" viewBox="0 0 130 130" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Coffee Brew logo">
+
+          <!-- Outer glow ring -->
+          <circle cx="65" cy="65" r="62" stroke="url(#ringGrad)" stroke-width="2.5" opacity="0.6"/>
+
+          <!-- Inner decorative ring -->
+          <circle cx="65" cy="65" r="54" stroke="url(#ringGrad)" stroke-width="1" stroke-dasharray="4 6" opacity="0.35"/>
+
+          <!-- Background circle fill -->
+          <circle cx="65" cy="65" r="58" fill="url(#bgGrad)" opacity="0.9"/>
+
+          <!-- ── Cup body ── -->
+          <!-- Main cup trapezoid -->
+          <path d="M38 58 L42 92 Q42 96 46 96 L84 96 Q88 96 88 92 L92 58 Z"
+                fill="url(#cupGrad)" rx="4"/>
+
+          <!-- Cup rim highlight -->
+          <rect x="36" y="54" width="58" height="7" rx="3.5" fill="url(#rimGrad)"/>
+
+          <!-- Cup shine -->
+          <ellipse cx="52" cy="72" rx="5" ry="10" fill="white" opacity="0.07" transform="rotate(-10 52 72)"/>
+
+          <!-- ── Handle ── -->
+          <path d="M88 66 Q104 66 104 76 Q104 86 88 86"
+                stroke="url(#handleGrad)" stroke-width="5.5"
+                stroke-linecap="round" fill="none"/>
+
+          <!-- ── Saucer ── -->
+          <ellipse cx="65" cy="98" rx="32" ry="5" fill="url(#saucerGrad)"/>
+          <ellipse cx="65" cy="97" rx="28" ry="3.5" fill="url(#saucerTopGrad)"/>
+
+          <!-- ── Steam lines ── -->
+          <g transform="translate(0, 2)">
+            <!-- Left steam -->
+            <path class="steam-1"
+              d="M50 52 Q47 46 50 40 Q53 34 50 28"
+              stroke="url(#steamGrad)" stroke-width="2.5"
+              stroke-linecap="round" fill="none"/>
+            <!-- Center steam -->
+            <path class="steam-2"
+              d="M65 50 Q62 44 65 38 Q68 32 65 26"
+              stroke="url(#steamGrad)" stroke-width="2.5"
+              stroke-linecap="round" fill="none"/>
+            <!-- Right steam -->
+            <path class="steam-3"
+              d="M80 52 Q77 46 80 40 Q83 34 80 28"
+              stroke="url(#steamGrad)" stroke-width="2.5"
+              stroke-linecap="round" fill="none"/>
+          </g>
+
+          <!-- ── Coffee surface inside cup ── -->
+          <ellipse cx="65" cy="62" rx="22" ry="5" fill="url(#coffeeGrad)" opacity="0.85"/>
+
+          <!-- ── Small decorative dots on cup ── -->
+          <circle cx="58" cy="80" r="1.5" fill="rgba(255,255,255,0.15)"/>
+          <circle cx="65" cy="83" r="1.5" fill="rgba(255,255,255,0.15)"/>
+          <circle cx="72" cy="80" r="1.5" fill="rgba(255,255,255,0.15)"/>
+
+          <!-- ── Star accents ── -->
+          <circle cx="22" cy="30" r="1.5" fill="#f3a01c" opacity="0.6"/>
+          <circle cx="108" cy="42" r="1"   fill="#f3a01c" opacity="0.5"/>
+          <circle cx="18" cy="88" r="1"    fill="#f3a01c" opacity="0.4"/>
+          <circle cx="112" cy="95" r="1.5" fill="#f3a01c" opacity="0.5"/>
+          <circle cx="30" cy="108" r="1"   fill="#f3a01c" opacity="0.35"/>
+          <circle cx="100" cy="22" r="1"   fill="#f3a01c" opacity="0.4"/>
+
+          <!-- ── Gradient definitions ── -->
+          <defs>
+            <radialGradient id="bgGrad" cx="40%" cy="35%">
+              <stop offset="0%"   stop-color="#5a1e2a"/>
+              <stop offset="100%" stop-color="#2a0a12"/>
+            </radialGradient>
+
+            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%"   stop-color="#f3a01c"/>
+              <stop offset="50%"  stop-color="#fbbf24"/>
+              <stop offset="100%" stop-color="#f97316"/>
+            </linearGradient>
+
+            <linearGradient id="cupGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+              <stop offset="0%"   stop-color="#c2410c"/>
+              <stop offset="40%"  stop-color="#9a3412"/>
+              <stop offset="100%" stop-color="#7c2d12"/>
+            </linearGradient>
+
+            <linearGradient id="rimGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#f97316"/>
+              <stop offset="50%"  stop-color="#f3a01c"/>
+              <stop offset="100%" stop-color="#f97316"/>
+            </linearGradient>
+
+            <linearGradient id="handleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%"   stop-color="#ea580c"/>
+              <stop offset="100%" stop-color="#c2410c"/>
+            </linearGradient>
+
+            <linearGradient id="saucerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%"   stop-color="#b45309"/>
+              <stop offset="100%" stop-color="#78350f"/>
+            </linearGradient>
+
+            <linearGradient id="saucerTopGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#d97706"/>
+              <stop offset="50%"  stop-color="#f3a01c"/>
+              <stop offset="100%" stop-color="#d97706"/>
+            </linearGradient>
+
+            <linearGradient id="coffeeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%"   stop-color="#92400e"/>
+              <stop offset="100%" stop-color="#451a03"/>
+            </linearGradient>
+
+            <linearGradient id="steamGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%"   stop-color="#fbbf24" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <h1 class="brand-name">Coffee Brew</h1>
+      <p class="brand-tagline">Crafted with love. Served with warmth.</p>
+    </div>
+
+    <!-- Role cards -->
+    <div class="cards">
+
+      <!-- Customer -->
+      <div class="card card-customer" id="customerBtn" tabindex="0" role="button" aria-label="Enter as Customer">
+        <div class="card-icon-wrap">
+          <i class="fas fa-mug-hot"></i>
+        </div>
+        <h2 class="card-title">Customer</h2>
+        <p class="card-desc">Browse our full menu, explore drinks &amp; snacks, and place your order with ease.</p>
+        <span class="card-btn">
+          Enter as Customer &nbsp;<i class="fas fa-arrow-right"></i>
+        </span>
+      </div>
+
+      <!-- Admin -->
+      <div class="card card-admin" id="adminBtn" tabindex="0" role="button" aria-label="Enter as Admin">
+        <div class="card-icon-wrap">
+          <i class="fas fa-user-shield"></i>
+        </div>
+        <h2 class="card-title">Admin</h2>
+        <p class="card-desc">Manage incoming orders, add new menu items, and keep the shop running smoothly.</p>
+        <span class="card-btn">
+          Enter as Admin &nbsp;<i class="fas fa-arrow-right"></i>
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Admin Login Modal -->
+  <div class="overlay" id="loginOverlay" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <div class="modal">
+
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close">&#10005;</button>
+
+      <div class="modal-lock-icon">
+        <i class="fas fa-lock"></i>
+      </div>
+
+      <h2 class="modal-title" id="loginTitle">Admin Login</h2>
+      <p class="modal-sub">Enter your credentials to access the admin panel.</p>
+
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="uname">Username</label>
+          <div class="input-row">
+            <i class="fas fa-user input-icon"></i>
+            <input type="text" id="uname" placeholder="Enter username" autocomplete="username" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="upass">Password</label>
+          <div class="input-row">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="upass" placeholder="Enter password" autocomplete="current-password" required>
+            <button type="button" class="eye-btn" id="eyeBtn" aria-label="Show/hide password">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <p class="error-msg" id="errMsg"></p>
+        <button type="submit" class="login-submit">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <script src="store.js"></script>
+  <script>
+    /* ── Customer card ── */
+    const customerBtn = document.getElementById('customerBtn');
+    customerBtn.addEventListener('click', () => { window.location.href = 'coffeshop.html'; });
+    customerBtn.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') window.location.href = 'coffeshop.html';
+    });
+
+    /* ── Admin card → open modal ── */
+    const adminBtn      = document.getElementById('adminBtn');
+    const loginOverlay  = document.getElementById('loginOverlay');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const loginForm     = document.getElementById('loginForm');
+    const errMsg        = document.getElementById('errMsg');
+    const eyeBtn        = document.getElementById('eyeBtn');
+    const passInput     = document.getElementById('upass');
+
+    adminBtn.addEventListener('click', openLogin);
+    adminBtn.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') openLogin();
+    });
+
+    function openLogin() {
+      loginOverlay.classList.add('open');
+      document.getElementById('uname').focus();
+    }
+
+    function closeLogin() {
+      loginOverlay.classList.remove('open');
+      loginForm.reset();
+      errMsg.textContent = '';
+    }
+
+    modalCloseBtn.addEventListener('click', closeLogin);
+    loginOverlay.addEventListener('click', e => {
+      if (e.target === loginOverlay) closeLogin();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeLogin();
+    });
+
+    /* ── Show/hide password ── */
+    eyeBtn.addEventListener('click', () => {
+      const show = passInput.type === 'password';
+      passInput.type = show ? 'text' : 'password';
+      eyeBtn.querySelector('i').className = show ? 'fas fa-eye-slash' : 'fas fa-eye';
+    });
+
+    /* ── Login submit ── */
+    loginForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const user = document.getElementById('uname').value.trim();
+      const pass = passInput.value;
+
+      // Get credentials from store (falls back to default if never changed)
+      const creds = CoffeeStore.getAdminCredentials();
+
+      if (user === creds.username && pass === creds.password) {
+        CoffeeStore.setAdminSession();
+        window.location.href = 'admin.html';
+      } else {
+        errMsg.textContent = 'Incorrect username or password.';
+        passInput.value = '';
+        passInput.focus();
+      }
+    });
+  </script>
+</body>
+</html>

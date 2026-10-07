@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - Coffee Brew</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="stylesheet" href="coffeshop.css">
+    <link rel="stylesheet" href="product.css">
+</head>
+<body>
+    <!-- header/navbar -->
+    <header>
+      <nav class="navbar section-content">
+        <a href="coffeshop.html" class="nav-logo">
+          <h2 class="logo-text" style="font-family: miniver; color: rgb(255, 115, 15);">Coffee Brew</h2>
+        </a>
+        <ul class="nav-menu">
+          <button id="menu-close-button" class="fas fa-times"></button>
+          <li class="nav-item"><a href="coffeshop.html#" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="coffeshop.html#about" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="coffeshop.html#menu" class="nav-link">Menu</a></li>
+          <li class="nav-item"><a href="coffeshop.html#testimonials" class="nav-link">Testimonials</a></li>
+          <li class="nav-item"><a href="coffeshop.html#gallery" class="nav-link">Gallery</a></li>
+          <li class="nav-item"><a href="coffeshop.html#contact" class="nav-link">Contact</a></li>
+        </ul>
+        <button id="menu-open-button" class="fas fa-bars"></button>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Back button -->
+      <div class="back-bar">
+        <div class="section-content">
+          <a href="coffeshop.html#menu" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Menu
+          </a>
+        </div>
+      </div>
+
+      <!-- Product Detail Section -->
+      <section class="product-detail-section">
+        <div class="section-content">
+
+          <!-- Left: image -->
+          <div class="product-image-wrapper">
+            <img id="product-img" src="" alt="Product" class="product-main-img">
+            <div class="product-badge" id="product-category"></div>
+          </div>
+
+          <!-- Right: details -->
+          <div class="product-info">
+            <h1 class="product-name" id="product-name">Loading...</h1>
+            <div class="product-price-row">
+              <span class="product-price" id="product-price"></span>
+              <span class="product-time">
+                <i class="fas fa-clock"></i>
+                <span id="product-time"></span>
+              </span>
+            </div>
+
+            <p class="product-description" id="product-description"></p>
+
+            <div class="product-ingredients">
+              <h3 class="ingredients-title"><i class="fas fa-list-ul"></i> Ingredients</h3>
+              <ul class="ingredients-list" id="ingredients-list"></ul>
+            </div>
+
+            <div class="product-actions">
+              <!-- Quantity + total + order widget -->
+              <div class="order-widget">
+                <div class="qty-row">
+                  <button class="pw-qty-btn" id="pw-minus" aria-label="Decrease quantity">−</button>
+                  <span class="pw-qty-val" id="pw-qty">1</span>
+                  <button class="pw-qty-btn" id="pw-plus"  aria-label="Increase quantity">+</button>
+                </div>
+                <div class="pw-total-row">
+                  <span class="pw-total-label">Total:</span>
+                  <span class="pw-total-val" id="pw-total"></span>
+                </div>
+                <button class="pw-order-btn" id="pw-order-btn">
+                  <i class="fas fa-shopping-cart"></i> Order Now
+                </button>
+              </div>
+              <a href="coffeshop.html#contact" class="button contact-us">Contact Us</a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Related / You may also like -->
+      <section class="related-section">
+        <h2 class="section-title">You May Also Like</h2>
+        <div class="section-content">
+          <ul class="related-list" id="related-list"></ul>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- footer -->
+    <footer class="footer-section">
+      <div class="section-content">
+        <p class="copyright-text">📞+00-3456744544 Coffee Brew</p>
+        <div class="social-link-list">
+          <a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-link"><i class="fa-brands fa-x-twitter"></i></a>
+        </div>
+        <p class="policy-text">
+          <a href="#" class="policy-link">Privacy policy</a>
+          <span class="separator">•</span>
+          <a href="#" class="policy-link">Refund policy</a>
+        </p>
+      </div>
+    </footer>
+
+    <script src="product.js"></script>
+    <script>
+      // Navbar mobile toggle (same as main site)
+      const menuOpenButton = document.querySelector("#menu-open-button");
+      const menuCloseButton = document.querySelector("#menu-close-button");
+      menuOpenButton.addEventListener("click", () => document.body.classList.toggle("show-mobile-menu"));
+      menuCloseButton.addEventListener("click", () => menuOpenButton.click());
+    </script>
+
+    <script>
+      // ── Order widget — runs after product.js has called init() ──
+      (function () {
+        const minusBtn  = document.getElementById('pw-minus');
+        const plusBtn   = document.getElementById('pw-plus');
+        const qtyEl     = document.getElementById('pw-qty');
+        const totalEl   = document.getElementById('pw-total');
+        const orderBtn  = document.getElementById('pw-order-btn');
+
+        let qty       = 1;
+        let unitPrice = 0;
+        let productName  = '';
+        let productPrice = '';
+
+        // Wait for product.js init() to populate the DOM
+        function initWidget() {
+          productName  = document.getElementById('product-name').textContent.trim();
+          productPrice = document.getElementById('product-price').textContent.trim();
+
+          // Parse numeric price  e.g. "$6.99" → 6.99
+          unitPrice = parseFloat(productPrice.replace(/[^0-9.]/g, '')) || 0;
+
+          updateDisplay();
+        }
+
+        function updateDisplay() {
+          qtyEl.textContent   = qty;
+          const total         = (unitPrice * qty).toFixed(2);
+          totalEl.textContent = unitPrice > 0 ? '$' + total : productPrice;
+        }
+
+        minusBtn.addEventListener('click', () => {
+          if (qty > 1) { qty--; updateDisplay(); }
+        });
+
+        plusBtn.addEventListener('click', () => {
+          qty++;
+          updateDisplay();
+        });
+
+        orderBtn.addEventListener('click', () => {
+          if (!productName) return;
+          const params = new URLSearchParams({
+            order: productName,
+            price: productPrice,
+            qty:   qty
+          });
+          window.location.href = 'orderpage.html?' + params.toString();
+        });
+
+        // Init after a tiny tick so product.js has finished rendering
+        setTimeout(initWidget, 50);
+      })();
+    </script>
+</body>
+</html>

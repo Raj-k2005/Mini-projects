@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Place Order — Coffee Brew</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="coffeshop.css">
+  <style>
+    /* ── Page shell ── */
+    body { background: #1a0a0e; color: #fff; font-family: 'Poppins','Segoe UI',sans-serif; }
+
+    /* ── Top bar ── */
+    .op-topbar {
+      background: #3b141c;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .op-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #fff; text-decoration: none; font-size: 0.9rem;
+      padding: 7px 16px; border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: background .2s, border-color .2s;
+    }
+    .op-back:hover { background: rgba(255,255,255,0.08); border-color: #f3a01c; }
+    .op-topbar-title {
+      font-size: 1.2rem; font-weight: 700; color: #f3a01c;
+      font-family: 'Poppins',sans-serif;
+    }
+
+    /* ── Main layout ── */
+    .op-page {
+      max-width: 960px; margin: 0 auto;
+      padding: 40px 20px 80px;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* ── Section headings ── */
+    .op-section-title {
+      font-size: 1rem; font-weight: 700;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .op-section-title i { color: #f3a01c; }
+
+    /* ── Card shell ── */
+    .op-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 28px 24px;
+      margin-bottom: 20px;
+    }
+
+    /* ── Item search ── */
+    .op-search-row { display: flex; gap: 10px; margin-bottom: 8px; }
+    .op-input {
+      flex: 1; height: 46px; padding: 0 14px;
+      background: rgba(255,255,255,0.07);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 10px; color: #fff;
+      font-size: 0.92rem; font-family: inherit; outline: none;
+      transition: border-color .22s;
+    }
+    .op-input::placeholder { color: rgba(255,255,255,0.25); }
+    .op-input:focus { border-color: #f3a01c; }
+    textarea.op-input { height: auto; padding: 12px 14px; resize: vertical; }
+
+    .op-add-btn {
+      height: 46px; padding: 0 20px;
+      background: #f3a01c; color: #3b141c;
+      border: none; border-radius: 10px;
+      font-size: 0.9rem; font-weight: 700; font-family: inherit;
+      cursor: pointer; white-space: nowrap;
+      display: flex; align-items: center; gap: 6px;
+      transition: background .2s;
+    }
+    .op-add-btn:hover { background: #e8920a; }
+
+    /* Suggestions */
+    .op-suggestions {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0; right: 0;
+      background: #2a0f17;
+      border: 1px solid rgba(243,160,28,0.25);
+      border-radius: 10px;
+      list-style: none;
+      max-height: 220px; overflow-y: auto;
+      display: none;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      z-index: 100;
+    }
+    .op-suggestions.show { display: block; }
+    .op-suggestions li {
+      padding: 11px 16px; cursor: pointer;
+      font-size: 0.88rem; color: rgba(255,255,255,0.8);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex; justify-content: space-between; align-items: center;
+      transition: background .15s;
+    }
+    .op-suggestions li:last-child { border-bottom: none; }
+    .op-suggestions li:hover,
+    .op-suggestions li.highlighted { background: rgba(243,160,28,0.15); color: #fff; }
+    .op-sug-price { color: #f3a01c; font-weight: 700; font-size: 0.82rem; }
+
+    /* Search wrapper needs relative positioning for absolute suggestions */
+    .op-search-wrapper {
+      position: relative;
+    }
+
+    /* ── Cart items ── */
+    .op-cart-empty {
+      text-align: center; color: rgba(255,255,255,0.3);
+      font-size: 0.88rem; padding: 16px 0;
+    }
+
+    .op-cart-item {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .op-cart-item:last-of-type { border-bottom: none; }
+
+    .op-item-info { min-width: 0; }
+    .op-item-name {
+      font-size: 0.92rem; font-weight: 600;
+      color: #fff; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+    .op-item-unit { font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+    .op-qty-wrap {
+      display: flex; align-items: center; gap: 0;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 30px; overflow: hidden;
+    }
+    .op-qty-btn {
+      width: 32px; height: 32px;
+      background: none; border: none; color: #f3a01c;
+      font-size: 1.1rem; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s;
+    }
+    .op-qty-btn:hover { background: rgba(243,160,28,0.2); }
+    .op-qty-num {
+      min-width: 28px; text-align: center;
+      font-size: 0.9rem; font-weight: 700; color: #fff;
+    }
+
+    .op-line-price {
+      font-size: 0.92rem; font-weight: 700;
+      color: #ffd700; min-width: 56px; text-align: right;
+    }
+
+    .op-remove-btn {
+      background: none; border: none;
+      color: rgba(239,68,68,0.5); cursor: pointer;
+      font-size: 0.85rem; padding: 4px;
+      transition: color .2s;
+    }
+    .op-remove-btn:hover { color: #ef4444; }
+
+    /* ── Customer details ── */
+    .op-field { margin-bottom: 16px; }
+    .op-field label {
+      display: block; font-size: 0.83rem; font-weight: 600;
+      color: rgba(255,255,255,0.6); margin-bottom: 7px;
+    }
+    .op-field .req { color: #f87171; }
+
+    /* ── Order summary (right column) ── */
+    .op-summary {
+      position: sticky; top: 80px;
+    }
+
+    .op-summary-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(243,160,28,0.2);
+      border-radius: 16px;
+      padding: 24px 20px;
+    }
+
+    .op-summary-title {
+      font-size: 1.1rem; font-weight: 700; color: #f3a01c;
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .op-summary-line {
+      display: flex; justify-content: space-between;
+      align-items: center; padding: 8px 0;
+      font-size: 0.88rem; color: rgba(255,255,255,0.7);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .op-summary-line:last-of-type { border-bottom: none; }
+    .op-summary-line .val { color: #fff; font-weight: 600; }
+
+    .op-summary-total {
+      display: flex; justify-content: space-between;
+      align-items: center;
+      margin-top: 16px; padding-top: 16px;
+      border-top: 2px solid rgba(243,160,28,0.3);
+    }
+    .op-summary-total .label {
+      font-size: 1rem; font-weight: 700; color: rgba(255,255,255,0.8);
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .op-summary-total .amount {
+      font-size: 1.6rem; font-weight: 800; color: #ffd700;
+    }
+
+    .op-error {
+      color: #f87171; font-size: 0.83rem;
+      min-height: 18px; margin-bottom: 8px; text-align: center;
+    }
+
+    .op-place-btn {
+      width: 100%; height: 54px; margin-top: 20px;
+      background: #f3a01c; color: #3b141c;
+      border: none; border-radius: 30px;
+      font-size: 1rem; font-weight: 800; font-family: inherit;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: background .22s, transform .18s;
+      box-shadow: 0 6px 24px rgba(243,160,28,0.3);
+    }
+    .op-place-btn:hover { background: #e8920a; transform: translateY(-2px); }
+    .op-place-btn:active { transform: translateY(0); }
+
+    /* ── Success screen ── */
+    .op-success {
+      display: none;
+      flex-direction: column; align-items: center;
+      text-align: center; padding: 60px 20px;
+      max-width: 480px; margin: 0 auto;
+    }
+    .op-success.show { display: flex; }
+    .op-success-icon {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: rgba(34,197,94,0.15);
+      border: 3px solid #22c55e;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem; color: #22c55e;
+      margin-bottom: 24px;
+      animation: popIn .4s ease both;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    .op-success h2 { font-size: 1.8rem; font-weight: 800; color: #22c55e; margin-bottom: 10px; }
+    .op-success p  { color: rgba(255,255,255,0.55); font-size: 1rem; line-height: 1.6; margin-bottom: 8px; }
+    .op-success-id { color: #f3a01c; font-weight: 700; font-size: 1.1rem; margin: 8px 0 28px; }
+    .op-success-back {
+      padding: 12px 32px; background: #f3a01c; color: #3b141c;
+      border: none; border-radius: 30px; font-size: 0.95rem;
+      font-weight: 700; font-family: inherit; cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+      transition: background .2s;
+    }
+    .op-success-back:hover { background: #e8920a; }
+
+    /* ── Responsive ── */
+    @media (max-width: 720px) {
+      .op-page { grid-template-columns: 1fr; }
+      .op-summary { position: static; }
+    }
+    @media (max-width: 480px) {
+      .op-cart-item { grid-template-columns: 1fr auto auto; }
+      .op-line-price { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <div class="op-topbar">
+    <a href="javascript:history.back()" class="op-back">
+      <i class="fas fa-arrow-left"></i> Back
+    </a>
+    <span class="op-topbar-title">☕ Place Your Order</span>
+  </div>
+
+  <!-- Success screen (hidden until order placed) -->
+  <div class="op-success" id="opSuccess">
+    <div class="op-success-icon"><i class="fas fa-check"></i></div>
+    <h2>Order Placed!</h2>
+    <p>Your order has been received. We'll start preparing it right away.</p>
+    <p style="color:rgba(255,255,255,0.4);font-size:0.85rem;">Redirecting to order tracking…</p>
+    <p class="op-success-id" id="opSuccessId"></p>
+    <a href="myorders.html" class="op-success-back">
+      <i class="fas fa-receipt"></i> View My Orders
+    </a>
+  </div>
+
+  <!-- Order form -->
+  <div class="op-page" id="opForm">
+
+    <!-- LEFT: items + customer details -->
+    <div>
+
+      <!-- Item search -->
+      <div class="op-card">
+        <p class="op-section-title"><i class="fas fa-search"></i> Add Items</p>
+        <div class="op-search-wrapper">
+          <div class="op-search-row">
+            <input type="text" id="opSearch" class="op-input" placeholder="Search menu item…" autocomplete="off">
+            <button class="op-add-btn" id="opAddBtn"><i class="fas fa-plus"></i> Add</button>
+          </div>
+          <ul class="op-suggestions" id="opSuggestions"></ul>
+        </div>
+      </div>
+
+      <!-- Cart -->
+      <div class="op-card">
+        <p class="op-section-title"><i class="fas fa-shopping-cart"></i> Your Order</p>
+        <div id="opCart"><p class="op-cart-empty">No items yet — search above to add.</p></div>
+      </div>
+
+      <!-- Customer details -->
+      <div class="op-card">
+        <p class="op-section-title"><i class="fas fa-user"></i> Your Details</p>
+        <div class="op-field">
+          <label for="opName">Your Name <span class="req">*</span></label>
+          <input type="text" id="opName" class="op-input" placeholder="e.g. John Doe" required>
+        </div>
+        <div class="op-field">
+          <label for="opNote">Special Note <span style="color:rgba(255,255,255,0.3);font-weight:400;font-size:0.8rem;">(optional)</span></label>
+          <textarea id="opNote" class="op-input" rows="3" placeholder="e.g. No sugar, extra hot, allergies…"></textarea>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: order summary -->
+    <div class="op-summary">
+      <div class="op-summary-card">
+        <div class="op-summary-title"><i class="fas fa-receipt"></i> Order Summary</div>
+        <div id="opSummaryLines"><p class="op-cart-empty">No items yet.</p></div>
+        <div class="op-summary-total">
+          <span class="label">Total</span>
+          <span class="amount" id="opGrandTotal">$0.00</span>
+        </div>
+        <p class="op-error" id="opError"></p>
+        <button class="op-place-btn" id="opPlaceBtn">
+          <i class="fas fa-check-circle"></i> Place Order
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="store.js"></script>
+  <script>
+    // ── All menu items (static + custom from localStorage) ──────────
+    const STATIC_MENU = [
+      { name:'Coffee Brew',            price:'$6.99', category:'Hot Coffee' },
+      { name:'Americano',              price:'$5.99', category:'Hot Coffee' },
+      { name:'Cappuccino',             price:'$6.99', category:'Hot Coffee' },
+      { name:'Irish Coffee',           price:'$7.99', category:'Hot Coffee' },
+      { name:'Vienna Coffee',          price:'$2.99', category:'Hot Coffee' },
+      { name:'Mazagran',               price:'$4.99', category:'Hot Coffee' },
+      { name:'Latte',                  price:'$5.99', category:'Hot Coffee' },
+      { name:'Macchiato',              price:'$8.99', category:'Hot Coffee' },
+      { name:'Café au Lait',           price:'$3.99', category:'Hot Coffee' },
+      { name:'Iced Coffee',            price:'$4.05', category:'Cold Beverage' },
+      { name:'Cold Brew',              price:'$7.99', category:'Cold Beverage' },
+      { name:'Nitro Cold Brew',        price:'$4.99', category:'Cold Beverage' },
+      { name:'Vietnamese Iced Coffee', price:'$3.99', category:'Cold Beverage' },
+      { name:'Iced Mocha',             price:'$4.47', category:'Cold Beverage' },
+      { name:'Affogato al Caffè',      price:'$5.99', category:'Cold Beverage' },
+      { name:'Dalgona Iced Coffee',    price:'$7.34', category:'Cold Beverage' },
+      { name:'Shakerato',              price:'$6.88', category:'Cold Beverage' },
+      { name:'Cappuccino Freddo',      price:'$3.00', category:'Cold Beverage' },
+      { name:'Chicken Doritto',        price:'$6.99', category:'Snack' },
+      { name:'Taaco Pork',             price:'$6.99', category:'Snack' },
+      { name:'Afghani Salsa',          price:'$6.99', category:'Snack' },
+      { name:'Tottia Taco',            price:'$6.99', category:'Snack' },
+      { name:'Special Taco Bell',      price:'$6.99', category:'Snack' },
+      { name:'Mexican Comboa',         price:'$6.99', category:'Snack' },
+      { name:'Fish Taco',              price:'$6.99', category:'Snack' },
+      { name:'Meriana Roll',           price:'$6.99', category:'Snack' },
+      { name:'Salood',                 price:'$6.99', category:'Snack' },
+      { name:'Spicy Pizza',            price:'$6.99', category:'Snack' },
+      { name:'Cheesy Burst',           price:'$6.99', category:'Snack' },
+      { name:'Solo Slice',             price:'$6.99', category:'Snack' },
+      { name:'Classic Cheeseburger',   price:'$8.99', category:'Snack' },
+      { name:'Bacon Cheeseburger',     price:'$8.99', category:'Snack' },
+      { name:'BBQ Burger',             price:'$9.99', category:'Snack' },
+      { name:'Jucy Lucy',              price:'$8.99', category:'Snack' },
+      { name:'Teriyaki Burger',        price:'$9.99', category:'Snack' },
+      { name:'Ramen Burger',           price:'$9.99', category:'Snack' },
+    ];
+
+    function getAllItems() {
+      const custom = CoffeeStore.getCustomMenuItems().map(i => ({
+        name: i.name, price: i.price, category: i.category
+      }));
+      return [...STATIC_MENU, ...custom];
+    }
+
+    function parsePrice(str) {
+      return parseFloat((str || '0').replace(/[^0-9.]/g, '')) || 0;
+    }
+
+    function esc(str) {
+      return String(str || '')
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ── Cart state ───────────────────────────────────────────────
+    let cart = [];   // [{ name, price, qty }]
+
+    function addToCart(name, price) {
+      const ex = cart.find(i => i.name === name);
+      if (ex) { ex.qty++; }
+      else     { cart.push({ name, price, qty: 1 }); }
+      render();
+    }
+
+    function changeQty(idx, delta) {
+      cart[idx].qty += delta;
+      if (cart[idx].qty <= 0) cart.splice(idx, 1);
+      render();
+    }
+
+    function removeItem(idx) {
+      cart.splice(idx, 1);
+      render();
+    }
+
+    // ── Render cart + summary ────────────────────────────────────
+    function render() {
+      const cartEl   = document.getElementById('opCart');
+      const sumEl    = document.getElementById('opSummaryLines');
+      const totalEl  = document.getElementById('opGrandTotal');
+
+      if (!cart.length) {
+        cartEl.innerHTML  = '<p class="op-cart-empty">No items yet — search above to add.</p>';
+        sumEl.innerHTML   = '<p class="op-cart-empty">No items yet.</p>';
+        totalEl.textContent = '$0.00';
+        return;
+      }
+
+      let grand = 0;
+      let cartHtml = '';
+      let sumHtml  = '';
+
+      cart.forEach((item, idx) => {
+        const unit = parsePrice(item.price);
+        const line = unit * item.qty;
+        grand += line;
+
+        cartHtml += `
+          <div class="op-cart-item">
+            <div class="op-item-info">
+              <div class="op-item-name">${esc(item.name)}</div>
+              <div class="op-item-unit">${esc(item.price)} each</div>
+            </div>
+            <div class="op-qty-wrap">
+              <button class="op-qty-btn" onclick="changeQty(${idx},-1)">−</button>
+              <span class="op-qty-num">${item.qty}</span>
+              <button class="op-qty-btn" onclick="changeQty(${idx},1)">+</button>
+            </div>
+            <span class="op-line-price">$${line.toFixed(2)}</span>
+            <button class="op-remove-btn" onclick="removeItem(${idx})" title="Remove">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>`;
+
+        sumHtml += `
+          <div class="op-summary-line">
+            <span>${esc(item.name)} × ${item.qty}</span>
+            <span class="val">$${line.toFixed(2)}</span>
+          </div>`;
+      });
+
+      cartEl.innerHTML  = cartHtml;
+      sumEl.innerHTML   = sumHtml;
+      totalEl.textContent = '$' + grand.toFixed(2);
+    }
+
+    // ── Search / suggestions ─────────────────────────────────────
+    const searchEl  = document.getElementById('opSearch');
+    const sugEl     = document.getElementById('opSuggestions');
+    const addBtn    = document.getElementById('opAddBtn');
+
+    // Currently highlighted suggestion index
+    let highlightIdx = -1;
+
+    searchEl.addEventListener('input', () => {
+      highlightIdx = -1;
+      const q = searchEl.value.trim().toLowerCase();
+      if (!q) { sugEl.classList.remove('show'); return; }
+      const hits = getAllItems().filter(i => i.name.toLowerCase().includes(q)).slice(0, 8);
+      if (!hits.length) { sugEl.classList.remove('show'); return; }
+      sugEl.innerHTML = hits.map(i =>
+        `<li data-name="${esc(i.name)}" data-price="${esc(i.price)}">
+          <span>${esc(i.name)}</span>
+          <span class="op-sug-price">${esc(i.price)}</span>
+        </li>`
+      ).join('');
+      sugEl.classList.add('show');
+    });
+
+    // Click on a suggestion → add it
+    sugEl.addEventListener('mousedown', e => {
+      // Use mousedown so it fires before the input loses focus
+      const li = e.target.closest('li');
+      if (!li) return;
+      e.preventDefault(); // prevent blur on searchEl
+      addToCart(li.dataset.name, li.dataset.price);
+      searchEl.value = '';
+      sugEl.classList.remove('show');
+      highlightIdx = -1;
+      searchEl.focus();
+    });
+
+    // Add button — add whatever is typed or first suggestion
+    addBtn.addEventListener('click', () => {
+      const q = searchEl.value.trim();
+      if (!q) return;
+
+      // Exact match first
+      let match = getAllItems().find(i => i.name.toLowerCase() === q.toLowerCase());
+
+      // If no exact match, use first visible suggestion
+      if (!match) {
+        const firstLi = sugEl.querySelector('li');
+        if (firstLi) {
+          match = { name: firstLi.dataset.name, price: firstLi.dataset.price };
+        }
+      }
+
+      addToCart(match ? match.name : q, match ? match.price : '');
+      searchEl.value = '';
+      sugEl.classList.remove('show');
+      highlightIdx = -1;
+      searchEl.focus();
+    });
+
+    // Enter key → same as clicking Add
+    searchEl.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addBtn.click();
+      }
+      // Arrow key navigation through suggestions
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        const items = sugEl.querySelectorAll('li');
+        if (!items.length) return;
+        items[highlightIdx]?.classList.remove('highlighted');
+        if (e.key === 'ArrowDown') highlightIdx = Math.min(highlightIdx + 1, items.length - 1);
+        else                       highlightIdx = Math.max(highlightIdx - 1, 0);
+        items[highlightIdx]?.classList.add('highlighted');
+        items[highlightIdx]?.scrollIntoView({ block: 'nearest' });
+      }
+    });
+
+    // Close suggestions when clicking outside
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.op-card')) {
+        sugEl.classList.remove('show');
+        highlightIdx = -1;
+      }
+    });
+
+    // ── Pre-load item from URL params ────────────────────────────
+    (function preload() {
+      const p    = new URLSearchParams(window.location.search);
+      const name = p.get('order');
+      const price= p.get('price');
+      const qty  = parseInt(p.get('qty'), 10) || 1;
+      if (!name) return;
+      addToCart(name, price || '');
+      const ex = cart.find(i => i.name === name);
+      if (ex && qty > 1) { ex.qty = qty; render(); }
+    })();
+
+    // ── Place order ──────────────────────────────────────────────
+    document.getElementById('opPlaceBtn').addEventListener('click', () => {
+      const name = document.getElementById('opName').value.trim();
+      const note = document.getElementById('opNote').value.trim();
+      const errEl = document.getElementById('opError');
+
+      errEl.textContent = '';
+
+      if (!name) {
+        errEl.textContent = 'Please enter your name.';
+        document.getElementById('opName').focus();
+        return;
+      }
+      if (!cart.length) {
+        errEl.textContent = 'Please add at least one item.';
+        searchEl.focus();
+        return;
+      }
+
+      // Calculate grand total
+      const grand = cart.reduce((sum, i) => sum + parsePrice(i.price) * i.qty, 0);
+
+      const order = CoffeeStore.addOrder({
+        customerName: name,
+        items: cart.map(i => ({ name: i.name, price: i.price, qty: i.qty })),
+        note: note,
+        total: '$' + grand.toFixed(2),
+      });
+
+      // Show success screen then redirect to My Orders page
+      document.getElementById('opForm').style.display    = 'none';
+      document.getElementById('opSuccessId').textContent =
+        'Order #' + order.id + '  •  Total: $' + grand.toFixed(2);
+      document.getElementById('opSuccess').classList.add('show');
+
+      // Redirect to My Orders after 2 seconds
+      setTimeout(() => {
+        window.location.href = 'myorders.html';
+      }, 2000);
+    });
+  </script>
+</body>
+</html>

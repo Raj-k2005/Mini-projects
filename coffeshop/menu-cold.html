@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cold Beverages — Coffee Brew</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="coffeshop.css">
+  <link rel="stylesheet" href="menu-category.css">
+</head>
+<body>
+
+  <header>
+    <nav class="navbar section-content">
+      <a href="coffeshop.html" class="nav-logo">
+        <h2 class="logo-text" style="font-family:miniver;color:rgb(255,115,15);">Coffee Brew</h2>
+      </a>
+      <ul class="nav-menu">
+        <button id="menu-close-button" class="fas fa-times"></button>
+        <li class="nav-item"><a href="coffeshop.html" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="coffeshop.html#about" class="nav-link">About</a></li>
+        <li class="nav-item"><a href="coffeshop.html#menu" class="nav-link">Menu</a></li>
+        <li class="nav-item"><a href="coffeshop.html#gallery" class="nav-link">Gallery</a></li>
+        <li class="nav-item"><a href="coffeshop.html#contact" class="nav-link">Contact</a></li>
+        <li class="nav-item"><a href="myorders.html" class="nav-link" style="color:#f3a01c;">My Order</a></li>
+      </ul>
+      <button id="menu-open-button" class="fas fa-bars"></button>
+    </nav>
+  </header>
+
+  <main>
+
+    <div class="cat-hero cat-hero-cold">
+      <div class="cat-hero-content">
+        <div class="cat-hero-icon">
+          <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+            <path d="M20 12 L25 72 Q25 76 29 76 L51 76 Q55 76 55 72 L60 12 Z" fill="url(#hColdGlass)"/>
+            <rect x="18" y="8" width="44" height="7" rx="3.5" fill="url(#hColdRim)"/>
+            <path d="M25 22 L55 22 L54 70 Q54 73 51 73 L29 73 Q26 73 26 70 Z" fill="url(#hColdLiquid)" opacity="0.55"/>
+            <rect x="26" y="34" width="12" height="12" rx="3" fill="white" opacity="0.5" transform="rotate(-10 26 34)"/>
+            <rect x="42" y="40" width="10" height="10" rx="3" fill="white" opacity="0.4" transform="rotate(8 42 40)"/>
+            <rect x="30" y="50" width="9" height="9" rx="3" fill="white" opacity="0.35" transform="rotate(-5 30 50)"/>
+            <rect x="46" y="4" width="5" height="54" rx="2.5" fill="url(#hColdStraw)"/>
+            <circle cx="32" cy="26" r="2.5" fill="white" opacity="0.4"/>
+            <circle cx="42" cy="24" r="2" fill="white" opacity="0.35"/>
+            <defs>
+              <linearGradient id="hColdGlass" x1="20" y1="12" x2="60" y2="76" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#bfdbfe" stop-opacity="0.25"/><stop offset="100%" stop-color="#1e40af" stop-opacity="0.45"/>
+              </linearGradient>
+              <linearGradient id="hColdRim" x1="18" y1="0" x2="62" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#60a5fa"/><stop offset="50%" stop-color="#93c5fd"/><stop offset="100%" stop-color="#60a5fa"/>
+              </linearGradient>
+              <linearGradient id="hColdLiquid" x1="25" y1="22" x2="55" y2="73" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#1d4ed8"/>
+              </linearGradient>
+              <linearGradient id="hColdStraw" x1="46" y1="4" x2="51" y2="58" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#f0abfc"/><stop offset="100%" stop-color="#a855f7"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <h1 class="cat-hero-title">Cold Beverages</h1>
+        <p class="cat-hero-sub">Chill out with our refreshing cold drinks — smooth, bold, and ice-cold perfect.</p>
+      </div>
+    </div>
+
+    <div class="cat-tabs-bar">
+      <div class="section-content">
+        <div class="cat-tabs">
+          <a href="menu-hot.html"     class="cat-tab"><i class="fas fa-mug-hot"></i> Hot Coffees</a>
+          <a href="menu-cold.html"    class="cat-tab active"><i class="fas fa-snowflake"></i> Cold Beverages</a>
+          <a href="menu-snacks.html"  class="cat-tab"><i class="fas fa-burger"></i> Snacks</a>
+          <a href="menu-special.html" class="cat-tab"><i class="fas fa-star"></i> Chef's Specials</a>
+        </div>
+      </div>
+    </div>
+
+    <section class="cat-section menu-section">
+      <div class="section-content">
+        <ul class="menu-list" id="itemGrid">
+
+          <li class="menu-item">
+            <a href="product.html?id=iced-coffee" class="menu-item-link">
+              <img src="cold1.png.png" alt="Iced Coffee" class="menu-image">
+              <h3 class="name">Iced Coffee <span>$4.05</span></h3>
+              <p class="text">Classic brewed coffee chilled and served over ice. Simple and refreshing.</p>
+              <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="product.html?id=cold-brew" class="menu-item-link">
+              <img src="cold2.png.png" alt="Cold Brew" class="menu-image">
+              <h3 class="name">Cold Brew <span>$7.99</span></h3>
+              <p class="text">Steeped slowly in cold water for 12–24 hours — smooth and less acidic.</p>
+              <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="product.html?id=nitro-cold-brew" class="menu-item-link">
+              <img src="cold3.png" alt="Nitro Cold Brew" class="menu-image">
+              <h3 class="name">Nitro Cold Brew <span>$4.99</span></h3>
+              <p class="text">Infused with nitrogen for a creamy texture and foamy top.</p>
+              <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="product.html?id=vietnamese-iced-coffee" class="menu-item-link">
+              <img src="cold4.png" alt="Vietnamese Iced Coffee" class="menu-image">
+              <h3 class="name">Vietnamese Iced Coffee <span>$3.99</span></h3>
+              <p class="text">Strong coffee with sweetened condensed milk over ice. Bold and sweet.</p>
+              <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="product.html?id=iced-mocha" class="menu-item-link">
+              <img src="cold5.png" alt="Iced Mocha" class="menu-image">
+              <h3 class="name">Iced Mocha <span>$4.47</span></h3>
+              <p class="text">Espresso, milk, and chocolate syrup blended and chilled. Dessert in a cup.</p>
+              <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="product.html?id=affogato" class="menu-item-link">
+              <img src="cold6.png" alt="Affogato" class="menu-image">
+              <h3 class="name">Affogato al Caffè <span>$5.99</span></h3>
+              <p class="text">Vanilla ice cream drowned in hot espresso. Technically dessert, but we won't tell.</p>
+              <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="product.html?id=dalgona-iced-coffee" class="menu-item-link">
+              <img src="cold8.png" alt="Dalgona Iced Coffee" class="menu-image">
+              <h3 class="name">Dalgona Iced Coffee <span>$7.34</span></h3>
+              <p class="text">Whipped instant coffee spooned over cold milk. TikTok-famous and creamy.</p>
+              <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="product.html?id=shakerato" class="menu-item-link">
+              <img src="cold9.png" alt="Shakerato" class="menu-image">
+              <h3 class="name">Shakerato <span>$6.88</span></h3>
+              <p class="text">Italian-style espresso shaken with ice and sugar until frothy. Elegant.</p>
+              <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="product.html?id=cappuccino-freddo" class="menu-item-link">
+              <img src="cold10.png" alt="Cappuccino Freddo" class="menu-image">
+              <h3 class="name">Cappuccino Freddo <span>$3.00</span></h3>
+              <p class="text">Greek-style iced cappuccino with frothed milk and strong espresso.</p>
+              <div class="card-btn-row"><span class="view-details-btn">View Details &#8594;</span></div>
+            </a>
+          </li>
+
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer-section">
+    <div class="section-content">
+      <p class="copyright-text">📞+00-3456744544 Coffee Brew</p>
+      <div class="social-link-list">
+        <a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-x-twitter"></i></a>
+      </div>
+      <p class="policy-text">
+        <a href="#" class="policy-link">Privacy policy</a>
+        <span class="separator">•</span>
+        <a href="#" class="policy-link">Refund policy</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="store.js"></script>
+  <script src="menu-category.js"></script>
+  <script>
+    const menuOpenButton  = document.querySelector("#menu-open-button");
+    const menuCloseButton = document.querySelector("#menu-close-button");
+    menuOpenButton.addEventListener("click", () => document.body.classList.toggle("show-mobile-menu"));
+    menuCloseButton.addEventListener("click", () => menuOpenButton.click());
+    injectCustomItems('Cold Beverage', document.getElementById('itemGrid'));
+  </script>
+</body>
+</html>

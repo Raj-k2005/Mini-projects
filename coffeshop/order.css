@@ -1,0 +1,360 @@
+/* ===== Order Modal ===== */
+.order-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  padding: 16px;
+}
+
+.order-modal-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.order-modal-box {
+  background: #1e0d12;
+  border: 1px solid rgba(243,160,28,0.25);
+  border-radius: 20px;
+  padding: 36px 32px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  transform: translateY(30px) scale(0.97);
+  transition: transform 0.3s ease;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  color: #fff;
+}
+
+.order-modal-overlay.active .order-modal-box {
+  transform: translateY(0) scale(1);
+}
+
+.order-modal-close {
+  position: absolute;
+  top: 14px; right: 18px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.35);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.2s;
+}
+.order-modal-close:hover { color: #fff; }
+
+.order-modal-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.order-modal-icon {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.order-modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f3a01c;
+  margin-bottom: 6px;
+}
+
+.order-modal-subtitle {
+  color: rgba(255,255,255,0.45);
+  font-size: 0.88rem;
+}
+
+/* Fields */
+.order-field {
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.order-field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 7px;
+}
+
+.order-field .req { color: #f87171; }
+.order-field .hint { color: rgba(255,255,255,0.3); font-weight: 400; font-size: 0.8rem; }
+
+.order-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.07);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.92rem;
+  font-family: 'Poppins', sans-serif;
+  outline: none;
+  transition: border-color 0.25s;
+  resize: vertical;
+}
+
+.order-input::placeholder { color: rgba(255,255,255,0.25); }
+.order-input:focus { border-color: #f3a01c; }
+
+/* Item search row */
+.item-search-row {
+  display: flex;
+  gap: 10px;
+}
+
+.item-search-row .order-input { flex: 1; }
+
+.add-item-btn {
+  padding: 10px 18px;
+  background: #f3a01c;
+  color: #3b141c;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s;
+}
+.add-item-btn:hover { background: #e8920a; }
+
+/* Suggestions dropdown */
+.item-suggestions {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 60px;
+  background: #2a0f17;
+  border: 1px solid rgba(243,160,28,0.25);
+  border-radius: 8px;
+  list-style: none;
+  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.item-suggestions.show { display: block; }
+
+.item-suggestions li {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.8);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.15s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-suggestions li:last-child { border-bottom: none; }
+.item-suggestions li:hover { background: rgba(243,160,28,0.12); color: #fff; }
+.item-suggestions li .sug-price { color: #f3a01c; font-weight: 700; font-size: 0.82rem; }
+
+/* Cart */
+.order-cart {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 18px;
+  min-height: 60px;
+}
+
+.cart-empty {
+  text-align: center;
+  color: rgba(255,255,255,0.3);
+  font-size: 0.85rem;
+  padding: 10px 0;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 4px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.cart-item:last-child { border-bottom: none; }
+
+.cart-item-name {
+  flex: 1;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+}
+
+.cart-item-price {
+  font-size: 0.82rem;
+  color: #f3a01c;
+  font-weight: 700;
+  min-width: 48px;
+  text-align: right;
+}
+
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.qty-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  line-height: 1;
+}
+.qty-btn:hover { background: rgba(243,160,28,0.3); border-color: #f3a01c; }
+
+.qty-value {
+  min-width: 22px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.cart-remove {
+  background: none;
+  border: none;
+  color: rgba(239,68,68,0.6);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 2px 4px;
+  transition: color 0.2s;
+}
+.cart-remove:hover { color: #ef4444; }
+
+/* Cart total row */
+.cart-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  padding: 10px 4px 2px;
+  border-top: 1px solid rgba(243,160,28,0.3);
+}
+
+.cart-total-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cart-total-val {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffd700;
+}
+
+/* Error */
+.order-error {
+  color: #f87171;
+  font-size: 0.85rem;
+  min-height: 18px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+/* Place order button */
+.place-order-btn {
+  width: 100%;
+  height: 52px;
+  background: #f3a01c;
+  color: #3b141c;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background 0.25s, transform 0.2s;
+}
+.place-order-btn:hover { background: #e8920a; transform: translateY(-2px); }
+
+/* ===== Toast ===== */
+.order-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: #22c55e;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 2000;
+  box-shadow: 0 8px 30px rgba(34,197,94,0.4);
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.order-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ===== Custom Menu Section ===== */
+/* Sits inside the dark menu area — reuses all .menu-section .menu-list styles */
+.custom-menu-section {
+  background: var(--dark-color);
+  color: var(--white-color);
+  padding: 0 0 100px;
+}
+
+.custom-menu-heading {
+  font-family: 'Miniver', cursive;
+  text-align: center;
+  font-size: xx-large;
+  color: #f3a01c;
+  padding: 60px 0 40px;
+}
+
+/* The list and items already inherit from .menu-section .menu-list in coffeshop.css */
+/* No extra sizing needed — cards will be identical to the existing menu cards */
+
+/* ===== Order Now button — defined in coffeshop.css ===== */
+
+@media (max-width: 600px) {
+  .order-modal-box { padding: 28px 18px; }
+  .item-suggestions { right: 0; }
+}

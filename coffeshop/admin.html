@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — Coffee Brew</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="sidebar-icon">☕</span>
+      <span class="sidebar-title">Coffee Brew</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-btn active" data-tab="dashboard">
+        <i class="fas fa-chart-line"></i> Dashboard
+      </button>
+      <button class="nav-btn" data-tab="orders">
+        <i class="fas fa-receipt"></i> Orders
+        <span class="badge" id="pendingBadge">0</span>
+      </button>
+      <button class="nav-btn" data-tab="menu">
+        <i class="fas fa-utensils"></i> Menu Items
+      </button>
+      <button class="nav-btn" data-tab="history">
+        <i class="fas fa-history"></i> History
+      </button>
+      <button class="nav-btn" data-tab="settings">
+        <i class="fas fa-cog"></i> Settings
+      </button>
+    </nav>
+
+    <button class="logout-btn" id="logoutBtn">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+  </aside>
+
+  <!-- Mobile top bar -->
+  <div class="topbar">
+    <button class="topbar-menu" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+    <span class="topbar-title">☕ Admin Panel</span>
+    <button class="topbar-logout" id="topbarLogout"><i class="fas fa-sign-out-alt"></i></button>
+  </div>
+
+  <!-- Main content -->
+  <main class="admin-main">
+
+    <!-- ── DASHBOARD TAB ── -->
+    <section class="tab-panel active" id="tab-dashboard">
+
+      <div class="panel-header">
+        <h1 class="panel-title"><i class="fas fa-chart-line"></i> Sales Dashboard</h1>
+        <div class="header-actions">
+          <select id="dashPeriod" class="filter-select" onchange="renderDashboard()">
+            <option value="7">Last 7 Days</option>
+            <option value="30" selected>Last 30 Days</option>
+            <option value="90">Last 90 Days</option>
+            <option value="all">All Time</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- KPI cards row -->
+      <div class="dash-kpi-row" id="dashKpis"></div>
+
+      <!-- Charts row -->
+      <div class="dash-charts-row">
+
+        <!-- Revenue over time (line chart) -->
+        <div class="dash-chart-card dash-chart-wide">
+          <div class="dash-chart-title">
+            <i class="fas fa-chart-area"></i> Revenue Over Time
+          </div>
+          <div class="dash-chart-wrap">
+            <canvas id="chartRevenue"></canvas>
+          </div>
+        </div>
+
+        <!-- Orders by status (doughnut) -->
+        <div class="dash-chart-card">
+          <div class="dash-chart-title">
+            <i class="fas fa-chart-pie"></i> Orders by Status
+          </div>
+          <div class="dash-chart-wrap dash-chart-wrap-sm">
+            <canvas id="chartStatus"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Category sales bar chart -->
+      <div class="dash-chart-card" style="margin-bottom:28px;">
+        <div class="dash-chart-title">
+          <i class="fas fa-chart-bar"></i> Sales by Category
+        </div>
+        <div class="dash-chart-wrap">
+          <canvas id="chartCategory"></canvas>
+        </div>
+      </div>
+
+      <!-- Top items section -->
+      <div class="dash-section-title">
+        <i class="fas fa-trophy"></i> Item Sales Report
+        <span class="dash-section-sub">Sorted by quantity sold — most popular first</span>
+      </div>
+      <div id="dashItemCards"></div>
+
+    </section>
+
+    <!-- ── ORDERS TAB ── -->
+    <section class="tab-panel" id="tab-orders">
+      <div class="panel-header">
+        <h1 class="panel-title"><i class="fas fa-receipt"></i> Customer Orders</h1>
+        <div class="header-actions">
+          <button class="btn-danger-outline" id="clearDoneBtn">
+            <i class="fas fa-trash"></i> Clear Done
+          </button>
+        </div>
+      </div>
+
+      <div class="orders-stats" id="ordersStats"></div>
+
+      <!-- Sub-tabs -->
+      <div class="order-subtabs">
+        <button class="subtab-btn active" id="subtab-pending" onclick="switchSubtab('pending')">
+          <i class="fas fa-clock"></i> Pending Orders
+          <span class="subtab-badge" id="pendingCount">0</span>
+        </button>
+        <button class="subtab-btn" id="subtab-ready" onclick="switchSubtab('ready')">
+          <i class="fas fa-bell"></i> Ready Orders
+          <span class="subtab-badge ready" id="readyCount">0</span>
+        </button>
+      </div>
+
+      <!-- Pending panel -->
+      <div id="panel-pending">
+        <div class="orders-grid" id="pendingGrid">
+          <div class="empty-state">
+            <i class="fas fa-inbox"></i>
+            <p>No pending orders yet.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ready panel -->
+      <div id="panel-ready" style="display:none;">
+        <div class="orders-grid" id="readyGrid">
+          <div class="empty-state">
+            <i class="fas fa-bell"></i>
+            <p>No ready orders yet.</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ── MENU TAB ── -->
+    <section class="tab-panel" id="tab-menu">
+      <div class="panel-header">
+        <h1 class="panel-title"><i class="fas fa-utensils"></i> Menu Management</h1>
+        <button class="btn-primary" id="openAddItemBtn">
+          <i class="fas fa-plus"></i> Add New Item
+        </button>
+      </div>
+
+      <p class="panel-note">
+        <i class="fas fa-info-circle"></i>
+        Items you add here appear directly inside their chosen category section on the menu page — alongside the existing items.
+      </p>
+
+      <div class="menu-admin-grid" id="customMenuGrid">
+        <div class="empty-state">
+          <i class="fas fa-plus-circle"></i>
+          <p>No custom items added yet. Click "Add New Item" to get started.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── HISTORY TAB ── -->
+    <section class="tab-panel" id="tab-history">
+
+      <div class="panel-header">
+        <h1 class="panel-title"><i class="fas fa-history"></i> Order History</h1>
+        <span class="history-note">All completed (Ready) orders</span>
+      </div>
+
+      <!-- Search + filter bar -->
+      <div class="history-toolbar">
+
+        <!-- Date picker -->
+        <div class="history-search-group">
+          <label class="history-label"><i class="fas fa-calendar-alt"></i> Filter by Date</label>
+          <input type="date" id="historyDatePicker" class="history-date-input">
+        </div>
+
+        <!-- Quick filters -->
+        <div class="history-quick-btns">
+          <button class="hq-btn active" id="hqAll"   onclick="setHistoryFilter('all')">All Time</button>
+          <button class="hq-btn"        id="hqToday" onclick="setHistoryFilter('today')">Today</button>
+          <button class="hq-btn"        id="hqWeek"  onclick="setHistoryFilter('week')">This Week</button>
+          <button class="hq-btn"        id="hqMonth" onclick="setHistoryFilter('month')">This Month</button>
+        </div>
+
+        <!-- Clear date -->
+        <button class="btn-outline" id="historyClearDate" style="height:38px;padding:0 14px;font-size:0.82rem;">
+          <i class="fas fa-times"></i> Clear
+        </button>
+
+      </div>
+
+      <!-- Revenue summary card -->
+      <div class="revenue-card" id="revenueCard">
+        <div class="revenue-row">
+          <div class="revenue-stat">
+            <span class="revenue-label">Orders Found</span>
+            <span class="revenue-val" id="historyOrderCount">0</span>
+          </div>
+          <div class="revenue-divider"></div>
+          <div class="revenue-stat">
+            <span class="revenue-label">Total Items Sold</span>
+            <span class="revenue-val" id="historyItemCount">0</span>
+          </div>
+          <div class="revenue-divider"></div>
+          <div class="revenue-stat highlight">
+            <span class="revenue-label">💰 Total Revenue</span>
+            <span class="revenue-val revenue-amount" id="historyRevenue">$0.00</span>
+          </div>
+        </div>
+        <div class="revenue-period" id="revenuePeriod">Showing all time</div>
+      </div>
+
+      <!-- Orders list -->
+      <div id="historyList"></div>
+
+    </section>
+
+    <!-- ── SETTINGS TAB ── -->
+    <section class="tab-panel" id="tab-settings">
+      <div class="panel-header">
+        <h1 class="panel-title"><i class="fas fa-cog"></i> Settings</h1>
+      </div>
+
+      <div class="settings-card">
+        <h2 class="settings-section-title"><i class="fas fa-key"></i> Change Admin Password</h2>
+        <form id="changePassForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label>New Username</label>
+              <input type="text" id="newUsername" class="admin-input" placeholder="Enter new username">
+            </div>
+            <div class="form-group">
+              <label>New Password</label>
+              <input type="password" id="newPassword" class="admin-input" placeholder="Enter new password">
+            </div>
+            <div class="form-group">
+              <label>Confirm Password</label>
+              <input type="password" id="confirmPassword" class="admin-input" placeholder="Confirm new password">
+            </div>
+          </div>
+          <p class="settings-error" id="settingsError"></p>
+          <p class="settings-success" id="settingsSuccess"></p>
+          <button type="submit" class="btn-primary">Save Changes</button>
+        </form>
+      </div>
+
+      <div class="settings-card danger-zone">
+        <h2 class="settings-section-title"><i class="fas fa-exclamation-triangle"></i> Danger Zone</h2>
+        <p>Clear all orders from the system. This cannot be undone.</p>
+        <button class="btn-danger" id="clearAllOrdersBtn">
+          <i class="fas fa-trash-alt"></i> Clear All Orders
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Add Item Modal -->
+  <div class="modal-overlay" id="addItemModal">
+    <div class="modal-box">
+      <button class="modal-close" id="closeAddItem"><i class="fas fa-times"></i></button>
+      <h2 class="modal-title"><i class="fas fa-plus-circle"></i> Add New Menu Item</h2>
+
+      <form id="addItemForm" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Item Name <span class="req">*</span></label>
+            <input type="text" id="itemName" class="admin-input" placeholder="e.g. Mocha Latte" required>
+          </div>
+          <div class="form-group">
+            <label>Price <span class="req">*</span></label>
+            <input type="text" id="itemPrice" class="admin-input" placeholder="e.g. 5.99" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Category <span class="req">*</span></label>
+            <select id="itemCategory" class="admin-input" required>
+              <option value="">Select category</option>
+              <option value="Hot Coffee">Hot Coffee</option>
+              <option value="Cold Beverage">Cold Beverage</option>
+              <option value="Snack">Snack</option>
+              <option value="Special">Special</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Serve Time</label>
+            <input type="text" id="itemTime" class="admin-input" placeholder="e.g. 5 min">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description <span class="req">*</span></label>
+          <textarea id="itemDesc" class="admin-input" rows="3" placeholder="Describe the item..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Ingredients <span class="hint">(comma separated)</span></label>
+          <input type="text" id="itemIngredients" class="admin-input" placeholder="e.g. Espresso, Milk, Chocolate syrup">
+        </div>
+
+        <!-- ── Image upload ── -->
+        <div class="form-group">
+          <label>Item Image</label>
+          <div class="img-upload-area" id="imgUploadArea">
+            <div class="img-preview-wrap" id="imgPreviewWrap" style="display:none;">
+              <img id="imgPreview" src="" alt="Preview">
+              <button type="button" class="img-clear-btn" id="imgClearBtn" title="Remove image">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="img-placeholder" id="imgPlaceholder">
+              <i class="fas fa-image"></i>
+              <span>No image selected</span>
+            </div>
+          </div>
+          <div class="img-btn-row">
+            <!-- Gallery / file picker -->
+            <label class="img-pick-btn" for="imgFileInput">
+              <i class="fas fa-folder-open"></i> Choose from Gallery
+            </label>
+            <input type="file" id="imgFileInput" accept="image/*" style="display:none;">
+            <!-- Camera capture -->
+            <label class="img-pick-btn camera" for="imgCameraInput">
+              <i class="fas fa-camera"></i> Take Photo
+            </label>
+            <input type="file" id="imgCameraInput" accept="image/*" capture="environment" style="display:none;">
+          </div>
+          <!-- Hidden field stores base64 or URL -->
+          <input type="hidden" id="itemImageData">
+        </div>
+        <p class="form-error" id="addItemError"></p>
+        <div class="modal-actions">
+          <button type="button" class="btn-outline" id="cancelAddItem">Cancel</button>
+          <button type="submit" class="btn-primary">Add to Menu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Detail Modal -->
+  <div class="modal-overlay" id="orderDetailModal">
+    <div class="modal-box">
+      <button class="modal-close" id="closeOrderDetail"><i class="fas fa-times"></i></button>
+      <h2 class="modal-title"><i class="fas fa-receipt"></i> Order Details</h2>
+      <div id="orderDetailContent"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="store.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
